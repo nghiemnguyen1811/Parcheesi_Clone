@@ -19,6 +19,7 @@ public class DiceManager : MonoBehaviour
     public static bool Rolled { get; set; }
     private const int amountOfDice = 2;
     [SerializeField] private ResultEvent OnResultChecked;
+    [SerializeField] private VoidEvent OnRollReady , OnRollNotReady;
     [SerializeField] private Dice dicePrefab;
     [SerializeField] private float throwForce;
     [SerializeField] private float rollForce;
@@ -37,6 +38,7 @@ public class DiceManager : MonoBehaviour
             {
                 Rolled = true;
                 RollDice();
+                OnRollNotReady?.Raise();
             }
         }
 
@@ -59,6 +61,7 @@ public class DiceManager : MonoBehaviour
         Result.dice2Result = allDices[1].result;
         //Debug.Log($" Dice 1: {Result.dice1Result} Dice 2: {Result.dice2Result} Total result: {Result.totalValue} Matched?: {Result.isMatched}");
         OnResultChecked?.Raise(Result);
+        OnRollReady?.Raise();
     }
 
     private async void RollDice()

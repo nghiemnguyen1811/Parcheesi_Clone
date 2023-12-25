@@ -43,6 +43,7 @@ public class Board : MonoBehaviour
 
     public static int FieldIndex = 0;
     [SerializeField] private VoidEvent OnThingSelected;
+    [SerializeField] private ResultEvent OnResultReceive;
     [SerializeField] private TransformRuntimeSet allStepRuntimeSet;
     [SerializeField] private FieldData[] dataArray;
     [SerializeField] private Piece piecePrefab;
@@ -52,6 +53,7 @@ public class Board : MonoBehaviour
     [SerializeField] private CameraSwitcher cameraSwitcher;
 
     public FieldData SelectedField { get => dataArray[FieldIndex]; }
+    public FieldData[] DataArray { get => dataArray; }
     private Result diceManagerResult;
     private List<InteractableObject> interactableObjects = new List<InteractableObject>();
     private void OnEnable()
@@ -80,6 +82,7 @@ public class Board : MonoBehaviour
     public void DiceManager_OnFinishChecking(Result result)
     {
         diceManagerResult = result;
+        OnResultReceive?.Raise(result);
         if (result.isMatched)
         {
             if (HaveActivePiece())
